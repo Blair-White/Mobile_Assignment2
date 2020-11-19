@@ -9,6 +9,7 @@ TagManager:
   - Platforms
   - Walls
   - Ramps
+  - Enemy
   layers:
   - Default
   - TransparentFX

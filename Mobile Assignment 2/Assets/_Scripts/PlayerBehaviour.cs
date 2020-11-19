@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    private bool dying;
+    private int count;
+    public GameObject life1, life2, life3;
+    private int lives = 3;
     public Joystick joystick;
     public float joystickHorizontalSensitivity;
     public float joystickVerticalSensitivity;
@@ -21,6 +26,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lives = 3;
         m_rigidBody2D = GetComponent<Rigidbody2D>();
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_animator = GetComponent<Animator>();
@@ -30,6 +36,15 @@ public class PlayerBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         _Move();
+        if(dying)
+        {
+            count++;
+            if(count > 10)
+            {
+                dying = false; count = 0;
+            }
+        
+        }
     }
 
     void _Move()
@@ -95,12 +110,35 @@ public class PlayerBehaviour : MonoBehaviour
         isGrounded = false;
     }
 
+    private void Die()
+    {
+        Debug.Log("die");
+        lives--;
+        if (lives == 0)
+        {
+            SceneManager.LoadScene(4);
+        }
+        if (lives == 2)
+        { life1.gameObject.SetActive(false); }
+        if (lives == 1)
+        { life2.gameObject.SetActive(false); }
+
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (dying) return;
         // respawn
         if (other.gameObject.CompareTag("DeathPlane"))
         {
+            Die();
             transform.position = spawnPoint.position;
+            dying = true;
+        }
+        if(other.gameObject.CompareTag("Enemy"))
+        {
+            Die();
+            transform.position = spawnPoint.position;
+            dying = true;
         }
     }
 }

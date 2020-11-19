@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class LogoScreen : MonoBehaviour
+public class ExitSignScript : MonoBehaviour
 {
-    private int count;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,9 +14,14 @@ public class LogoScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+    }
 
-        count++;
-        if (count > 320)
-            SceneManager.LoadScene(1);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene(3);
+        }
     }
 }
