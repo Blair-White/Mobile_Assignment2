@@ -17,7 +17,7 @@ public class LogoScreen : MonoBehaviour
     {
 
         count++;
-        if (count > 320)
+        if (count > 522)
             SceneManager.LoadScene(1);
     }
 }
